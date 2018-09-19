@@ -10,3 +10,7 @@ if [ ! -f /root/.ssh/authorized_keys ] || ! grep -q "$FULLKEY" /root/.ssh/author
 	mkdir -p /root/.ssh
 	echo "$FULLKEY" >>/root/.ssh/authorized_keys
 fi
+
+
+/opt/farm/scripts/setup/extension.sh sf-mc-black
+/opt/farm/scripts/setup/extension.sh sf-db-tools
