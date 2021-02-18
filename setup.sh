@@ -1,30 +1,7 @@
 #!/bin/sh
 . /opt/farm/scripts/init
 
-add_root_key() {
-	key=`/opt/farm/ext/keys/get-ssh-management-key-content.sh $1`
-	/opt/farm/ext/passwd-utils/add-key.sh root inline "$key"
-}
-
-
-add_root_key $HOST
-
-# actual server hostname can differ from configured one
-current=`hostname`
-if [ "$HOST" != "$current" ]; then
-	add_root_key $current
-fi
-
-
-# TODO: detect also Microsoft Azure and Google Cloud (and only these)
-
-# detect Amazon EC2/ECS and install also keys for one of these
-if [ -f /etc/image-id ] && grep -q ami-ecs /etc/image-id; then
-	add_root_key ecs-null
-elif [ -d /sys/class/dmi/id ] && grep -qi amazon /sys/class/dmi/id/* 2>/dev/null; then
-	add_root_key .amazonaws.com
-fi
-
+/opt/farm/ext/passwd-utils/add-key.sh root inline "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDtEZaP/UWN/fx2EvMubgbogehpfTInewXiMiHIgOQzh7F5WYWpGG+ktXBj6zAmjVV4p1xwqZcYeVa9LM4VibFKpBOZr2tv2cqLO3D9ljm1fjt4y3Ty2Ue/eLy1fv6v1dwRlG71y1W5TecB2Mccr2MJaCIHaUTaKvr0763Oqp5zK8YgKYb/yavV+PMNY6f2wUnOcxPxBTJ50zwctraZjSZwMHmY7IJcWKjanKh+A98egI8ZIHeelti9nTgjeHvhF02EbnNKVXEo5uP/T3I0S99pKuROxLiloz5TjWGDT2utTSY0bw453Okcm01GoUs+r1dwOm70golshXRhQs5IZnc5 root@espeo.dev"
 
 /opt/farm/scripts/setup/extension.sh sf-mc-black
 /opt/farm/scripts/setup/extension.sh sf-db-tools
