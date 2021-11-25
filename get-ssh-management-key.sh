@@ -1,3 +1,3 @@
 #!/bin/sh
 
-echo "$HOME/.ssh/id_espeo_admin"
+echo "$HOME/.serverfarmer/ssh/id_espeo_admin"
